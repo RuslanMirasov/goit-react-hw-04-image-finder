@@ -1,6 +1,6 @@
 import css from './Error.module.css';
 
-export const Error = ({ errorText }) => {
+export default function Error({ errorText }){
    return (
       <div className={css.Error}>
          <h2 className={css.ErrorTitle}>{errorText[0]}</h2>

@@ -1,42 +1,27 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import css from './Popup.module.css';
 
-
 const moralRoot = document.querySelector("#modal-root");
 
-export class Popup extends Component{   
-
-   componentDidMount() {
-      window.addEventListener('keydown', this.handleKeydown);
-   };
+export default function Popup({ url, onClose }) {
+   useEffect(() => {window.addEventListener('keydown', handleKeydown)}, []);
+   useEffect(() => {return () => {window.removeEventListener('keydown', handleKeydown)}}, []);
    
-   componentWillUnmount() {
-      window.removeEventListener('keydown', this.handleKeydown);
+   const handleKeydown = e => {
+      e.code === 'Escape' && onClose()
    };
 
-   handleKeydown = e => {
-      if (e.code === 'Escape') {
-         this.props.onClose();
-      }
+   const handleOverlayClick = e => {
+      e.target === e.currentTarget && onClose()
    };
 
-   handleOverlayClick = e => {
-      if (e.target === e.currentTarget) {
-         this.props.onClose();
-      }
-   };
-   
-   render() {
-      return createPortal(
-         <div className={css.Overlay} onClick={this.handleOverlayClick}>
-            <div className={css.Modal}>
-               <img src={this.props.url} alt="Pixabay"/>
-            </div>
-         </div>,
-         moralRoot,
-      );
-   };
+   return createPortal(
+      <div className={css.Overlay} onClick={handleOverlayClick}>
+         <div className={css.Modal}>
+            <img src={url} alt="Pixabay"/>
+         </div>
+      </div>,
+      moralRoot,
+   );
 };
-
-export default Popup;

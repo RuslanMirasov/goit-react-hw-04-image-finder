@@ -1,6 +1,6 @@
 import css from './ImageGalleryItem.module.css';
 
-export const ImageGalleryItem = ({ images, shouPopup }) => {
+export default function ImageGalleryItem({ images, shouPopup }) {
    return (
       images.map(({ id, webformatURL, largeImageURL }) => (
          <li key={id} className={css.ImageGalleryItem} onClick={() => shouPopup(largeImageURL)}>
