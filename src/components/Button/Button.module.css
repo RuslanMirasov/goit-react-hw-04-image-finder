@@ -1,0 +1,51 @@
+/*
+* Стили компонента Buton (Load more)
+*/
+.Button {
+  align-content: center;
+  align-items: center;
+  background-color: #5c91b1;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 18px;
+  font-weight: 700;
+  height: 50px;
+  padding: 0px 40px;
+  justify-content: center;
+  margin-top: 20px;
+  outline: none;
+  position: relative;
+  text-transform: uppercase;
+  -webkit-transform: translate(0);
+  transform: translate(0);
+  transition: background-color 0.25s ease-out;
+  width: auto;
+  max-width: 100%;
+}
+
+.Button:before {
+  content: '';
+  background: #fff;
+  display: block;
+  height: 50%;
+  left: 0;
+  opacity: 0.2;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.Button:hover,
+.Button:focus {
+  background-color: #155889;
+}
+
+.Button:active {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transform: translateY(1px);
+}

@@ -1,0 +1,12 @@
+.App {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+  background: #f1f4f7;
+  padding-bottom: 80px;
+}
