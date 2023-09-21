@@ -21,7 +21,7 @@ export default function App() {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    request !=='' && getImagesFromApi()
+    request !== '' && getImagesFromApi();
   }, [request, page]);
 
   async function getImagesFromApi() {
