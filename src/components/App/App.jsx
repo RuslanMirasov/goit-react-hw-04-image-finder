@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {fetcImages} from "../../api/api";
+import { fetcImages } from '../../api/api';
 import Searchbar from 'components/Searchbar/Searchbar';
 import Popup from 'components/Popup/Popup';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
@@ -10,7 +10,6 @@ import Loader from 'components/Loader/Loader';
 import css from './App.module.css';
 
 export default function App() {
-
   const [images, setImages] = useState([]);
   const [imagesTotal, setImagesTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -21,16 +20,22 @@ export default function App() {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    request !== '' && getImagesFromApi();
+    if (!request) {
+      return;
+    }
+    getImagesFromApi(); // eslint-disable-next-line
   }, [request, page]);
 
-  async function getImagesFromApi() {
+  const getImagesFromApi = async () => {
     setIsLoading(true);
     setError('');
     try {
       const newImages = await fetcImages(page, request);
       if (newImages.totalHits === 0) {
-        setError(['Sorry', 'There are no images matching your search query. Please try again']);
+        setError([
+          'Sorry',
+          'There are no images matching your search query. Please try again',
+        ]);
         return;
       }
       setImages([...images, ...newImages.hits]);
@@ -40,15 +45,10 @@ export default function App() {
     } finally {
       setIsLoading(false);
     }
-  }
-
-  const closeModal = () => {
-    setShowModal(false);
   };
 
   const getFormRequest = newRequest => {
     if (request === newRequest) {
-      alert(`Images for the query "${newRequest}" are already displayed`);
       return;
     }
     setRequest(newRequest);
@@ -60,27 +60,27 @@ export default function App() {
     setError(formError);
   };
 
-  const onImageClick = (url) => {
+  const onImageClick = url => {
     setModalImage(url);
     setShowModal(true);
-  }
-
-  const onLoadMore = () => {
-    setPage(prevState => prevState + 1);
   };
 
   return (
     <main className={css.App}>
       <Searchbar onSubmit={getFormRequest} onError={getFormError} />
       {error.length > 0 && <Error errorText={error} />}
-      {(images.length > 0 && error.length === 0) && 
+      {images.length > 0 && error.length === 0 && (
         <ImageGallery>
           <ImageGalleryItem images={images} shouPopup={onImageClick} />
         </ImageGallery>
-      }
-      {(!isLoading && error.length === 0 && images.length < imagesTotal) && <Button loadMore={onLoadMore} />}
+      )}
+      {!isLoading && error.length === 0 && images.length < imagesTotal && (
+        <Button loadMore={() => setPage(prevState => prevState + 1)} />
+      )}
       <Loader showLoader={isLoading} />
-      {showModal && <Popup url={modalImage} onClose={closeModal} />}
+      {showModal && (
+        <Popup url={modalImage} onClose={() => setShowModal(false)} />
+      )}
     </main>
   );
 }
