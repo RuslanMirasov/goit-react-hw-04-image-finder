@@ -23,29 +23,30 @@ export default function App() {
     if (!request) {
       return;
     }
-    getImagesFromApi(); // eslint-disable-next-line
-  }, [request, page]);
 
-  const getImagesFromApi = async () => {
-    setIsLoading(true);
-    setError('');
-    try {
-      const newImages = await fetcImages(page, request);
-      if (newImages.totalHits === 0) {
-        setError([
-          'Sorry',
-          'There are no images matching your search query. Please try again',
-        ]);
-        return;
+    const getImagesFromApi = async () => {
+      setIsLoading(true);
+      setError('');
+      try {
+        const newImages = await fetcImages(page, request);
+        if (newImages.totalHits === 0) {
+          setError([
+            'Sorry',
+            'There are no images matching your search query. Please try again',
+          ]);
+          return;
+        }
+        setImages(prev => [...prev, ...newImages.hits]);
+        setImagesTotal(newImages.totalHits);
+      } catch (error) {
+        setError([error.message, error.request.responseText]);
+      } finally {
+        setIsLoading(false);
       }
-      setImages([...images, ...newImages.hits]);
-      setImagesTotal(newImages.totalHits);
-    } catch (error) {
-      setError([error.message, error.request.responseText]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    };
+
+    getImagesFromApi();
+  }, [request, page]);
 
   const getFormRequest = newRequest => {
     if (request === newRequest) {

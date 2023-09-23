@@ -6,15 +6,14 @@ const moralRoot = document.querySelector('#modal-root');
 
 export default function Popup({ url, onClose }) {
   useEffect(() => {
+    const handleKeydown = e => {
+      e.code === 'Escape' && onClose();
+    };
     window.addEventListener('keydown', handleKeydown);
     return () => {
       window.removeEventListener('keydown', handleKeydown);
-    }; // eslint-disable-next-line
-  }, []);
-
-  const handleKeydown = e => {
-    e.code === 'Escape' && onClose();
-  };
+    };
+  }, [onClose]);
 
   const handleOverlayClick = e => {
     e.target === e.currentTarget && onClose();
